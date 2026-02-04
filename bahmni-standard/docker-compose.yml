@@ -20,7 +20,8 @@ services:
 
   proxy:
     image: 'bahmni/proxy:${PROXY_IMAGE_TAG:?}'
-    #volumes:
+    volumes:
+      - '${PROXY_CONFIG_volume:?}:/usr/local/apache2/htdocs'
       # - ${CERTIFICATE_PATH}:/etc/tls
     ports:
       - '80:80'
@@ -358,8 +359,8 @@ services:
     profiles: ["emr","bahmni-standard","bahmni-mart"]
     volumes:
       - "${CONFIG_VOLUME:?}:/usr/local/apache2/htdocs/bahmni_config/:ro"
-    #   - "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
-    #   - "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
+      - "${BAHMNI_WEB_CONFIG_VOLUME:?}:/usr/local/apache2/htdocs/:ro"
+      # - "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     logging: *log-config
     restart: ${RESTART_POLICY}
 
